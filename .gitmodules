@@ -1,0 +1,3 @@
+[submodule "tools/sunxi/sunxi-tools"]
+	path = tools/sunxi/sunxi-tools
+	url = https://github.com/linux-sunxi/sunxi-tools.git

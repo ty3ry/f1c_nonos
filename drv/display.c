@@ -104,6 +104,10 @@ int disp_init (struct DISP *cfg, u32 bg)
       PD->CFG0 = 0x22222222;  // PD0..PD7: LCD D2..D7, D10, D11
       PD->CFG1 = 0x22222222;  // PD8..PD15: LCD D12..D15, D18..D21
       PD->CFG2 = 0x00222222;  // PD16..PD21: LCD D22..D23, CLK, DE, HS, VS
+      /*PD->CFG0 = 0x22222220;  // PD0..PD7: LCD D2..D7, D10, D11
+      PD->CFG1 = 0x22202222;  // PD8..PD15: LCD D12..D15, D18..D21
+      PD->CFG2 = 0x00222222;  // PD16..PD21: LCD D22..D23, CLK, DE, HS, VS*/
+
       PD->DRV0 = 0xFFFFFFFF;  // Drive strong (level 3)
       PD->DRV1 = 0x00000FFF;
       PD->PUL0 = 0;           // Pull-up/down disable
@@ -138,11 +142,30 @@ u8 disp_backlight (u8 x)
   if(x > 100) x = 100;
   #ifdef MANGO_BOARD
   #else
-  PA->CFG0 = (PA->CFG0 & ~0x0F00) | 0x0300;
+  //PA->CFG0 = (PA->CFG0 & ~0x0F00) | 0x0300;
+  PE->CFG1 = (PE->CFG1 & ~0xF0000) | 0x40000;
+
   PWM->CTRL = 0x070;
   PWM->CH0_PERIOD = (100 << 16) | x;
   #endif
   return x;
+}
+
+void enable_display(bool state)
+{
+  PE->CFG0 = (PE->CFG0 & ~0xF0000000) | 0x10000000;
+  
+  switch(state)
+  {
+    case 1:
+      PE->DAT |= (1<<6);
+      break;
+    case 0:
+      PE->DAT &= ~(1<<6);
+      break;
+    default: break;
+  }
+
 }
 
 void disp_sync (void)

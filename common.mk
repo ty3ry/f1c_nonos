@@ -4,8 +4,8 @@ SRCH	= $(foreach dir,$(DIRS) $(DIRD),$(wildcard $(dir)/*.h))
 OBJS	= $(patsubst %.c,out/%.o,$(notdir $(SRCS) $(CSRCS)))
 vpath %.c $(dir $(SRCS))
 
-RAMSIZE = 32M
-#RAMSIZE = 64M
+#RAMSIZE = 32M
+RAMSIZE = 64M
 BRD	= DBC_BOARD
 #BRD	= MANGO_BOARD
 
@@ -15,8 +15,8 @@ CFLAGS  += $(addprefix -I,$(DIRS)) -c -O3 -mcpu=arm926ej-s \
 	-MMD -MT$@ -Wall -Wformat=0 -DARM -DRAMSIZE$(RAMSIZE) -D$(BRD)
 LFLAGS	+= -lm -Xlinker --gc-sections -Wl,-Map,$(NAME).map \
 	-Wl,--defsym=RAMSIZE=$(RAMSIZE) -T$(BASE)drv/
-FEL	= "$(BASE)tools\sunxi\sunxi-fel"
-MKSUNXI	= "$(BASE)tools\sunxi\mksunxi"
+FEL	= "$(BASE)tools/sunxi/sunxi-tools/sunxi-fel"
+MKSUNXI	= "$(BASE)tools/sunxi/mksunxi/mksunxi"
 
 .PHONY:	all clean run flash
 

@@ -65,9 +65,11 @@ int main (void)
   fb = fb_alloc(display->width, display->height, 16);
   lay_config(0, display->width, display->height, 0, 0, 16, fb, 0, 5 << 8);
   lay_update(0);
+  //enable_display(1);
   delay(100);
-  twi_init(SYS_TWI_NUM, twi);
+  //twi_init(SYS_TWI_NUM, twi);
   disp_backlight(100);
+  //printf("After set backlight!\n");
 
   lv_init();
   lv_tick_set_cb(get_ms);
@@ -79,12 +81,15 @@ int main (void)
 
   indev_drv = lv_indev_create();
   lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
-  lv_indev_set_read_cb(indev_drv, ts_read);
+  //lv_indev_set_read_cb(indev_drv, ts_read);
 
   lv_demo_widgets();
   //lv_demo_music();
   //lv_demo_stress();
   //lv_demo_benchmark();
+
+  //printf("Enter main loop!\n");
+
   while(1)
   {
     lv_task_handler();

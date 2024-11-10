@@ -244,11 +244,13 @@ static void auto_step_cb(lv_timer_t * t)
                 lv_label_set_text(attr, "Copyright 2020 LVGL Kft. | www.lvgl.io | lvgl@lvgl.io");
 #endif
                 lv_obj_align(attr, LV_ALIGN_BOTTOM_MID, 0, -10);
+                state = 5;
                 break;
             }
         case 41:
-            lv_screen_load(lv_obj_create(NULL));
-            _lv_demo_music_pause();
+            //lv_screen_load(lv_obj_create(NULL));
+            //_lv_demo_music_pause();
+            
             break;
     }
     state++;
