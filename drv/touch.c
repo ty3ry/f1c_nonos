@@ -8,21 +8,12 @@
 
 struct ts_data tp;
 
-
-// void __attribute__((interrupt("IRQ"))) irq_handler (void)
-// {
-//     if (TP->INT_FIFO_STAT & FIFO_DATA_PENDING) {
-//         TP->INT_FIFO_STAT = (1<<16);
-
-//     }
-// }
-
 int tp_init(void)
 {
     u32 reg = 0;
 
-    TP->INT_FIFO_CTRL = TEMP_IRQ_EN(1) | DATA_IRQ_EN(1) | FIFO_TRIG(1) | 
-                        FIFO_FLUSH(1) | TP_UP_IRQ_EN(1);
+    /** set gpio for TP */
+    PA->CFG0 = 0x02020202;
 
     /*
 	 * Select HOSC clk, clkin = clk / 6, adc samplefreq = clkin / 8192,
@@ -37,7 +28,7 @@ int tp_init(void)
      * ....
      * 1111: Most sensitive
 	 */
-    TP->CTRL_REG2 = TP_SENSITIVE_ADJUST(12) | TP_MODE_SELECT(0);
+    TP->CTRL_REG2 = TP_SENSITIVE_ADJUST(15) | TP_FIFO_MODE_SELECT(0);
 
     /*
 	 * Enable median and averaging filter, optional property for
@@ -47,22 +38,19 @@ int tp_init(void)
      * 10: 8/4
      * 11: 16/8
 	 */
-    TP->CTRL_REG3 = FILTER_EN(1) | FILTER_TYPE(0);
+    TP->CTRL_REG3 = FILTER_EN(1) | FILTER_TYPE(1);
 
     TP->INT_TPR = TEMP_ENABLE(1) | TEMP_PERIOD(1953);
 
-    reg = STYLUS_UP_DEBOUN(5) | STYLUS_UP_DEBOUN_EN(1);
-    reg |= TP_MODE_EN(1);
+    
+    TP->INT_FIFO_CTRL = /*TEMP_IRQ_EN(1) | */DATA_IRQ_EN(1) | FIFO_TRIG(1) | 
+                        FIFO_FLUSH(1) | TP_UP_IRQ_EN(1) /*| TP_DOWN_IRQ_EN(1)*/;
+
+    reg = STYLUS_UP_DEBOUN(5) | STYLUS_UP_DEBOUN_EN(1) | ADC_CHAN_SELECT(0xf);
+    reg |= TP_EN(1);
     TP->CTRL_REG1 = reg;
 
-    TP->INT_FIFO_CTRL = TEMP_IRQ_EN(1);
-
-    /** IRQ init */
-    INT->BASE_ADDR = 0;
-    INT->MASK[0] = ~(1 << IRQ_TP);
-    INT->MASK[1] = 0xFFFFFFFF;
-    INT->EN[0] = (1 << IRQ_TP);
-    INT->EN[1] = 0;
+    //TP->INT_FIFO_CTRL |= TEMP_IRQ_EN(1);
 
     return 0;
 }

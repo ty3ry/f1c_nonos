@@ -745,6 +745,7 @@ typedef struct {
   __IO  u32 INT_FIFO_STAT;    // TP Interrupt FIFO status register  (0x14)
   __IO  u32 INT_TPR;          // 0x18
   __IO  u32 COM_DATA;         // TP Common data Register (0x1C)
+  __IO  u32 T_DATA;           // temperature data (0x20)
   __IO  u32 DATA;             // TP Data Register (0x24)
 }TP_T;
 #define TP ((TP_T*)0x01C24800)
