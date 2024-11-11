@@ -454,7 +454,7 @@ typedef struct {
   __IO  u32 DAC_DPC;        // 0x00 DAC Digital Part Control
   __IO  u32 DAC_FIFOC;      // 0x04 DAC FIFO Control
   __IO  u32 DAC_FIFOS;      // 0x08 DAC FIFO Status
-  __O   u32 DAC_TXDATA;     // 0x0Ñ DAC TX Data
+  __O   u32 DAC_TXDATA;     // 0x0ï¿½ DAC TX Data
   __IO  u32 ADC_FIFOC;      // 0x10 ADC FIFO Control
   __IO  u32 ADC_FIFOS;      // 0x14 ADC FIFO Status
   __I   u32 ADC_RXDATA;     // 0x18 ADC RX Data
@@ -734,5 +734,19 @@ typedef struct {
   __IO  u32 PHYTUNE;        // 0x40c
 } USB_T;
 #define USB ((USB_T*)0x01C13000)
+
+/** touch panel */
+typedef struct {
+  __IO  u32 CTRL_REG0;        // TP Control register 0 (0x00)
+  __IO  u32 CTRL_REG1;        // TP Control register 1 (0x04)
+  __IO  u32 CTRL_REG2;        // TP Control register 2 (0x08)
+  __IO  u32 CTRL_REG3;        // TP Control register 3 (0x0C)
+  __IO  u32 INT_FIFO_CTRL;    // TP Interrupt FIFO Control Register (0x10)
+  __IO  u32 INT_FIFO_STAT;    // TP Interrupt FIFO status register  (0x14)
+  __IO  u32 INT_TPR;          // 0x18
+  __IO  u32 COM_DATA;         // TP Common data Register (0x1C)
+  __IO  u32 DATA;             // TP Data Register (0x24)
+}TP_T;
+#define TP ((TP_T*)0x01C24800)
 
 #endif /* __F1C100S_H__ */

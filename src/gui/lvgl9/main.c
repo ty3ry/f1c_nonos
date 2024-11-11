@@ -81,7 +81,7 @@ int main (void)
 
   indev_drv = lv_indev_create();
   lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
-  //lv_indev_set_read_cb(indev_drv, ts_read);
+  lv_indev_set_read_cb(indev_drv, ts_read);
 
   lv_demo_widgets();
   //lv_demo_music();

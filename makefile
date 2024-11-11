@@ -23,3 +23,4 @@ all:
 	$(MK) src/twi/rtc
 	$(MK) src/usbd/msc
 	$(MK) src/usbh/msc
+	$(MK) src/touch
