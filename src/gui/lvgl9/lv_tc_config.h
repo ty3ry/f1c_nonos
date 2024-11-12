@@ -7,6 +7,7 @@ extern "C" {
     This is the configuration file for the touch calibration system.
     Change the defines below to match your application
 */
+#define CONFIG_USE_CUSTOM_LV_TC_COEFFICIENTS
 
 
 #if defined CONFIG_USE_CUSTOM_LV_TC_START_MSG
@@ -80,6 +81,15 @@ extern "C" {
 #define LV_TC_RECALIB_TIMEOUT_S CONFIG_LV_TC_RECALIB_TIMEOUT_S
 #else
 #define LV_TC_RECALIB_TIMEOUT_S                 30
+#endif
+
+#ifdef CONFIG_USE_CUSTOM_LV_TC_COEFFICIENTS
+#define CONFIG_LV_TC_COEFFICIENT_A  "-0.201331"
+#define CONFIG_LV_TC_COEFFICIENT_B  "0.001747"
+#define CONFIG_LV_TC_COEFFICIENT_C  "812.342468"
+#define CONFIG_LV_TC_COEFFICIENT_D  "0.002611"
+#define CONFIG_LV_TC_COEFFICIENT_E  "0.128789"
+#define CONFIG_LV_TC_COEFFICIENT_F  "-30.172075"
 #endif
 
 #ifdef __cplusplus

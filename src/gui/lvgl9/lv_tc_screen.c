@@ -132,8 +132,7 @@ static void lv_tc_screen_constructor(const lv_obj_class_t *class_p, lv_obj_t *ob
     lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
 
 
-    //LV_IMAGE_DECLARE(lv_tc_indicator_img);
-    const lv_image_dsc_t lv_tc_indicator_img;
+    LV_IMAGE_DECLARE(lv_tc_indicator_img);
 
     tCScreenObj->indicatorObj = lv_image_create(obj);
     lv_image_set_src(tCScreenObj->indicatorObj, &lv_tc_indicator_img);

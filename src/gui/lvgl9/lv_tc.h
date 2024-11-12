@@ -10,6 +10,7 @@ extern "C" {
 
 #include "stdbool.h"
 #include "lvgl.h"
+#include "lv_tc_config.h"
 
 
 /**********************

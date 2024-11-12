@@ -13,11 +13,22 @@
  * 0: disable
  * 1: enable
  */
-#define TS_CALIBRATE_EN   (1)
+#define TS_CALIBRATE_EN   (0)
 
-#if (TS_CALIBRATE_EN)
 #include "lv_tc.h"
 #include "lv_tc_screen.h"
+
+#if (TS_CALIBRATE_EN)
+void lv_tc_coeff_cb(lv_tc_coeff_t coeff)
+{
+  lv_tc_coeff_t *result_coeff = lv_tc_get_coeff();
+  printf("Coeff: a:%f b:%f c:%f d:%f e:%f f:%f\n", result_coeff->a,
+                                              result_coeff->b,
+                                              result_coeff->c,
+                                              result_coeff->d,
+                                              result_coeff->e,
+                                              result_coeff->f);
+}
 #endif
 
 #if (TS_DEVICE==TS_GT911)
@@ -85,16 +96,6 @@ void lv_tc_finished_cb(lv_event_t * e)
   lv_demo_widgets();
 }
 
-void lv_tc_coeff_cb(lv_tc_coeff_t coeff)
-{
-  lv_tc_coeff_t *result_coeff = lv_tc_get_coeff();
-  printf("Coeff: a:%f b:%f c:%f d:%f e:%f f:%f\n", result_coeff->a,
-                                              result_coeff->b,
-                                              result_coeff->c,
-                                              result_coeff->d,
-                                              result_coeff->e,
-                                              result_coeff->f);
-}
 
 int main (void)
 {
@@ -136,12 +137,16 @@ int main (void)
   lv_indev_set_type(indev_drv, LV_INDEV_TYPE_POINTER);
   lv_indev_set_read_cb(indev_drv, ts_read);
 
-  lv_tc_register_coeff_save_cb(lv_tc_coeff_cb);
-
-#if (TS_CALIBRATE_EN)
   lv_tc_indev_init(indev_drv);
 
+#if defined CONFIG_USE_CUSTOM_LV_TC_COEFFICIENTS
+  lv_tc_load_coeff_from_config();
+#endif
+
+#if (TS_CALIBRATE_EN)
   lv_obj_t *tCScreen = lv_tc_screen_create();
+
+  lv_tc_register_coeff_save_cb(lv_tc_coeff_cb);
   lv_obj_add_event_cb(tCScreen, lv_tc_finished_cb, LV_EVENT_READY, NULL);
 
   lv_disp_load_scr(tCScreen);
