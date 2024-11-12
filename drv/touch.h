@@ -74,15 +74,20 @@
 #define TEMP_ENABLE(x)		((x) << 16)
 #define TEMP_PERIOD(x)		((x) << 0)  /* t = x * 256 * 16 / clkin */
 
-struct ts_data {
-	unsigned int irq;
-	bool ignore_fifo_data;
-    uint32_t *reg_mem;
-	int temp_data;
-	int temp_offset;
-	int temp_step;
+struct point {
+	u32 x;
+	u32 y;
 };
 
+struct ts_data {
+	bool ignore_fifo_data;
+    struct point pt;
+	bool ready;
+	int temp_data; 
+};
+
+void tp_irq_handler(void);
 int tp_init(void);
+int tp_read(struct point *p);
 
 #endif /** end of TOUCH_H */

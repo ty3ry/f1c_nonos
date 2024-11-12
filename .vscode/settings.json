@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "touch.h": "c"
+        "touch.h": "c",
+        "sys.h": "c",
+        "lv_image.h": "c"
     }
 }

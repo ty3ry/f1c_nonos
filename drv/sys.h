@@ -10,6 +10,7 @@
 #include "twi.h"
 #include "aud.h"
 #include "sd.h"
+#include "touch.h"
 
 #ifdef MANGO_BOARD
 #define SYS_UART_NUM  UART1
