@@ -2,10 +2,22 @@
 #include <malloc.h>
 #include "sys.h"
 #include "ff.h"
+#include "usbh_msc.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_ONLY_JPEG
 #include "stb_image.h"
+
+
+#define  MEDIA_USB  0
+#define  MEDIA_TF   1
+
+
+#define MEDIA_SOURCE  (MEDIA_USB)
+
+void *__aeabi_read_tp(void) {
+    return NULL;
+}
 
 u16 *fb;
 
@@ -92,15 +104,17 @@ int slideshow (char *path)
         {
           printf("File(%d): %s\n", fsize, fno.fname);
           if(jpg_decode(fbuf, fsize, fb, display->width, display->height))
-            delay(500);
+            delay(1000);
         }
         free(fbuf);
       }
       f_close(&fil);
     }
     dev_enable(state_switch() && state_vsys() > 3000 ? 1 : 0);
-  } while(f_findnext(&dir, &fno) == FR_OK && fno.fname[0] && sd_card_detect());
+  } while(f_findnext(&dir, &fno) == FR_OK && fno.fname[0] && /*sd_card_detect()*/ dev_usb);
   f_closedir(&dir);
+  printf("Exit media!\n");
+  
   return 0;
 }
 
@@ -117,10 +131,18 @@ int main (void)
   lay_update(0);
   delay(100);
   disp_backlight(75);
+
+#if (MEDIA_SOURCE==MEDIA_TF)
   sd_init();
   disk_init(0, &sd_read, &sd_write);
+#else
+  usb_mux(USB_MUX_HOST);
+  usbh_init();
+#endif
+  
   while(1)
   {
+#if (MEDIA_SOURCE==MEDIA_TF)
     if(sd_card_detect())
     {
       printf("Card inserted: %uMB\n", sd_card_init() / 2048);
@@ -133,6 +155,24 @@ int main (void)
         puts("Card removed");
       }
     }
+#else
+    usbh_handler();
+    if(dev_usb ==  1)
+    {
+      printf("USB disk: ");
+      disk_init(0, &usbh_msc_read, &usbh_msc_write);
+      if(f_mount(&fs, (TCHAR*)"0:", 1) != FR_OK) puts("not support or error");
+      else
+      {
+        printf("%s\n", fs.fs_type == 2 ? "FAT16" : fs.fs_type == 3 ? "FAT32" : "exFAT");
+        while(dev_usb) slideshow("0:/wallpapers");
+        puts("USB removed");
+      }
+      dev_usb = 255;
+    }
+#endif
+
     dev_enable(state_switch() && state_vsys() > 3000 ? 1 : 0);
+
   }
 }
