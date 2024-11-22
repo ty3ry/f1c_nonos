@@ -15,8 +15,8 @@
  */
 #define TS_CALIBRATE_EN   (0)
 
-#include "lv_tc.h"
-#include "lv_tc_screen.h"
+#include "lv_tc/lv_tc.h"
+#include "lv_tc/lv_tc_screen.h"
 
 #if (TS_CALIBRATE_EN)
 void lv_tc_coeff_cb(lv_tc_coeff_t coeff)

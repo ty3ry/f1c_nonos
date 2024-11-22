@@ -141,8 +141,18 @@ int sd_card_init (void)
     cmd(7 + RES_R1, card.rca);    // SELECT/DESELECT_CARD (Standby to Transfer State)
     cmd(16 + RES_R1, 512);        // SET_BLOCKLEN
     cmd(55 + RES_R1, card.rca);
+
+    // https://chlazza.nfshost.com/docs/Part_1_Physical_Layer_Simplified_Specification_Ver3.01_Final_100518.pdf
+#if (SD_CARD_DATA_WIDTH==DATA_WIDTH_1BIT)
+    cmd(6 + RES_R1, 1);           // SET_BUS_WIDTH (1bit SD bus)
+    SD0->BWD = 0;                 // 00: 1 bit width
+                                  // 01: 4 bit width
+#else
     cmd(6 + RES_R1, 2);           // SET_BUS_WIDTH (4bit SD bus)
-    SD0->BWD = 1;
+    SD0->BWD = 1;                 // 00: 1 bit width
+                                  // 01: 4 bit width
+#endif // SD_CARD_DATA_WIDTH
+
     CCU->SDMMC0_CLK = 0x80000000; // Speed up
     card.cap = card.det ? arg : 0;
     delay(10);
