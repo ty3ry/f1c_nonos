@@ -70,8 +70,8 @@ int main (void)
   ZBuffer* frameBuffer = NULL;
   puts("\033[36mF1C100S - TinyGl Wave Demo\033[0m");
 
-  //disp_init(&TV_NTSC, 0);
-  disp_init(&TFT_800x480, 0);
+  disp_init(&TV_NTSC, 0);
+  //disp_init(&TFT_800x480, 0);
   fb = fb_alloc(display->width, display->height, 16);
   lay_config(0, display->width, display->height, 0, 0, 16, fb, 0, 5 << 8);
   lay_update(0);

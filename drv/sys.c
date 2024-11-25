@@ -159,6 +159,7 @@ void sys_init (void)
   ADC->CTRL |= 1;                     // ADC enabled
   usb_deinit();
   spi_deinit();
+
 }
 
 void udelay (u32 us) { for(ctr_us = 0; ctr_us < us; ) {}; }

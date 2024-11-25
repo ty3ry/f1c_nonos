@@ -42,7 +42,7 @@ void sd_deinit (void)
 void sd_init (void)
 {
   sd_deinit();
-  PF->CFG0 = 0x222222;
+  PF->CFG0 = 0x772227; /* 0x222222*/;
   CCU->BUS_CLK_GATING0 |= 0x100;
   CCU->BUS_SOFT_RST0 |= 0x100;
   CCU->SDMMC0_CLK = 0x8003000F;

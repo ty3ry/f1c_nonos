@@ -1,1 +1,1 @@
-# Interrupt Handling Example
+# Allwinner Touch Panel Example

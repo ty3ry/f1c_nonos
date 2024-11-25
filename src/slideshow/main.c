@@ -13,7 +13,7 @@
 #define  MEDIA_TF   1
 
 
-#define MEDIA_SOURCE  (MEDIA_USB)
+#define MEDIA_SOURCE  (MEDIA_TF)
 
 void *__aeabi_read_tp(void) {
     return NULL;

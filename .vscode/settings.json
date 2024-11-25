@@ -2,6 +2,10 @@
     "files.associations": {
         "touch.h": "c",
         "sys.h": "c",
-        "lv_image.h": "c"
+        "lv_image.h": "c",
+        "ratio": "cpp",
+        "f1c100s.h": "c",
+        "gpio.h": "c",
+        "stdio.h": "c"
     }
 }
