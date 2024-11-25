@@ -41,25 +41,19 @@ int main (void)
   pio_init.mode = CFG0_PA0_TP_X1 | CFG0_PA1_TP_X2 | CFG0_PA2_TP_Y1 | CFG0_PA3_TP_Y2;
   gpio_init(PA, &pio_init);
 
-  /*INT->BASE_ADDR = 0;
-  INT->MASK[0] = ~(1 << IRQ_TIM0);
-  INT->MASK[1] = 0xFFFFFFFF;
-  INT->EN[0] = (1 << IRQ_TIM0);
-  INT->EN[1] = 0;*/
-
-  /** IRQ init */
-  INT->BASE_ADDR = 0;
-  INT->MASK[0] = ~(1 << IRQ_TP) | ~(1 << IRQ_TIM0);
-  INT->MASK[1] = 0xFFFFFFFF;
-  INT->EN[0] = (1 << IRQ_TP) | (1 << IRQ_TIM0);
-  INT->EN[1] = 0;
-
   tim_init();
 
   if (touch_panel_init() != 0) {
     printf("Error TP Init!\n");
     return -1;
   }
+
+  /** IRQ init */
+  INT->BASE_ADDR = 0;
+  INT->MASK[0] = ~((1 << IRQ_TP) | (1 << IRQ_TIM0));
+  INT->MASK[1] = 0xFFFFFFFF;
+  INT->EN[0] = (1 << IRQ_TP) | (1 << IRQ_TIM0);
+  INT->EN[1] = 0;
 
   __asm__ __volatile__ ("msr cpsr_c,#0x53\n");  // SVC mode, IRQ enabled
   
