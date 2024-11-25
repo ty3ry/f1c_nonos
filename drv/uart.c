@@ -12,6 +12,7 @@ static int uart_idx (UART_T *UART)
 int uart_init (UART_T *UART, struct UART_CFG cfg)
 {
   int mask;
+  
   if(UART == UART0)
   {
     if(cfg.port == UART0_PE)      // PE0=UART0_RX, PE1=UART0_TX
