@@ -6,6 +6,7 @@
         "ratio": "cpp",
         "f1c100s.h": "c",
         "gpio.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "timeout.h": "c"
     }
 }
