@@ -12,6 +12,9 @@ static int uart_idx (UART_T *UART)
 int uart_init (UART_T *UART, struct UART_CFG cfg)
 {
   int mask;
+  UART_t *uart_config = {0};
+
+  uart_config = UART;
   
   if(UART == UART0)
   {
@@ -45,30 +48,64 @@ int uart_init (UART_T *UART, struct UART_CFG cfg)
   CCU->BUS_CLK_GATING2 |= mask;
   CCU->BUS_SOFT_RST2 &= ~mask;
   CCU->BUS_SOFT_RST2 |= mask;
-  UART->THR = 0;
+
+  /*UART->THR = 0;
   UART->FCR = 0xF7;
   UART->MCR = 0;
   UART->LCR = 0x80;
   UART->DLL = cfg.bitrate;
   UART->DLH = cfg.bitrate >> 8;
-  UART->LCR = (cfg.parity << 3) | (cfg.stop << 2) | cfg.lenght;
+  UART->LCR = (cfg.parity << 3) | (cfg.stop << 2) | cfg.lenght;*/
+
+  uart_config->thr.word = 0;
+  uart_config->fifo_ctrl.bit.FIFOE = 1;
+  uart_config->fifo_ctrl.bit.RFIFOR = 1;
+  uart_config->fifo_ctrl.bit.XFIFOR = 1;
+  uart_config->fifo_ctrl.bit.TFT = 3;  // FIFO 1/2 Full
+  uart_config->fifo_ctrl.bit.RT = 3;    // FIFO 2 less than full
+  
+  uart_config->modem_ctrl.word = 0;
+  uart_config->line_ctrl.bit.DLAB = 1;
+
+  uart_config->dll.bit.DLL = cfg.bitrate;
+  uart_config->dlh.bit.DLH = cfg.bitrate >> 8;
+  uart_config->line_ctrl.bit.DLAB = 0;
+
+  uart_config->line_ctrl.bit.DLS = cfg.lenght;
+  uart_config->line_ctrl.bit.STOP = cfg.stop;
+  uart_config->line_ctrl.bit.PEN = cfg.parity;
+
   return OK;
+}
+
+void uart_enable_irq(UART_T *UART)
+{
+  UART_t *puart = UART;
+
+  /** generate irq on 1 byte FIFO */
+  puart->fifo_ctrl.bit.RT = 0;
+  /** enable IRQ */
+  puart->ie.bit.ERBFI = 1;
 }
 
 int uart_put (UART_T *UART, u8 c)
 {
-  while(!(UART->LSR & 64));
-  UART->THR = c;
+  UART_t *puart = UART;
+
+  while(!(puart->line_stat.bit.TEMT));
+  puart->thr.bit.THR = c;
   return OK;
 }
 
 int uart_rx_check (UART_T *UART)
 {
-  return UART->LSR & 1 ? OK : KO;
+  UART_t *puart = UART;
+  return puart->line_stat.bit.DR ? OK : KO;
 }
 
 int uart_get (UART_T *UART)
 {
-  return uart_rx_check(UART) == KO ? KO : UART->RBR;
+  UART_t *puart = UART;
+  return uart_rx_check(UART) == KO ? KO : puart->rx_buff.bit.RBR;
 }
 

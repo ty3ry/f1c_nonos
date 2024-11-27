@@ -1,6 +1,8 @@
 #ifndef UART_H
 #define UART_H
 
+#include "f1c100s.h"
+
 enum UART0_PORT { UART0_PE, UART0_PF };
 enum UART1_PORT { UART1_PA, UART1_PD };
 enum UART2_PORT { UART2_PD, UART2_PE };
@@ -18,6 +20,15 @@ struct UART_CFG {
 };
 
 /** new uart register mapping */
+
+#define IRQ_ID_MODEM_STATUS   (0x00)
+#define IRQ_ID_NO_IRQ_PEND    (0x01)
+#define IRQ_ID_THR_EMPTY      (0x02)
+#define IRQ_ID_RX_DATA_AVAIL  (0x04)
+#define IRQ_ID_RX_LINE_STAT   (0x06)
+#define IRQ_ID_BUSY_DETECT    (0x07)
+#define IRQ_ID_CHAR_TIMEOUT   (0x0C)
+
 /** uart receiver buffer register */
 typedef union {
   struct {
@@ -237,6 +248,34 @@ typedef union {
   uint32_t word;
 } UART_DBGDLH_t;
 
+/**
+ * typedef struct {
+  union {
+  __I   u32 RBR;            // 0x00 Receive Buffer Register
+  __O   u32 THR;            // 0x00 Transmit Holding Register
+  __IO  u32 DLL;            // 0x00 Divisor Latch Low Register
+  };
+  union {
+  __IO  u32 IER;            // 0x04 Interrupt Enable Register
+  __IO  u32 DLH;            // 0x04 Divisor Latch High Register
+  };
+  union {
+  __I   u32 IIR;            // 0x08 Interrupt Identify Register
+  __O   u32 FCR;            // 0x08 FIFO Control Register
+  };
+  __IO  u32 LCR;            // 0x0C Line Control Register
+  __IO  u32 MCR;            // 0x10 Modem Control Register
+  __I   u32 LSR;            // 0x14 Line Status Register
+  __I   u32 MSR;            // 0x18 Modem Status Register
+  __I   u32 SCH;            // 0x1C Scratch Register
+  __I   u32 RES1[23];
+  __I   u32 USR;            // 0x7C Status register
+  __I   u32 TFL;            // 0x80 Transmit FIFO Level Register
+  __I   u32 RFL;            // 0x84 Receive FIFO Level Register
+  __I   u32 RES2[7];
+  __I   u32 HALT;           // 0xA4 Halt TX Register
+} UART_T;
+ */
 
 /** uart register handler */
 typedef struct
@@ -270,6 +309,7 @@ typedef struct
 /** end of uart register mapping */
 
 int uart_init (UART_T *UART, struct UART_CFG cfg);
+void uart_enable_irq(UART_T *UART);
 int uart_put (UART_T *UART, u8 c);
 int uart_rx_check (UART_T *UART);
 int uart_get (UART_T *UART);

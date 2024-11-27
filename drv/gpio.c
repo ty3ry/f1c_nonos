@@ -23,22 +23,45 @@
  *****************************************************************************/
 #include "sys.h"
 
+/***
+ * @brief   gpio initialization function
+ * @param   port port ID
+ * @param   gpio_init gpio configuration
+ * @retval  init status
+ */
 int gpio_init(PIO_T *port, GPIO_Init_t *gpio_init)
 {
-    uint32_t temp = 0;
+    uint8_t pos = 0;
+    uint32_t mask = 0x00;
+    uint32_t pin = gpio_init->pin;
 
-    if (gpio_init->pin < 256)
-    {
-        temp = port->CFG0;
-        port->CFG0 = gpio_init->mode;
+    if (gpio_init->pin > 0x100) {
+        pin = (pin >> 8);
     }
-    else if (gpio_init->pin < 65536)
-    {
-        port->CFG1 = gpio_init->mode;;
+    else if (gpio_init->pin > 0x10000) {
+        pin = (pin >> 16);
     }
-    else if (gpio_init->pin < 16777216)
+
+    while(pos < 8)
     {
-        port->CFG2 = gpio_init->mode;;
+        if ((1<<pos) & pin)
+        {
+            mask = (mask | (0x07<<(4*pos)));
+        }
+        pos += 1;
+    }
+
+    if (gpio_init->pin < 0x100)
+    {
+        port->CFG0 = (port->CFG0 & ~(mask)) | gpio_init->mode;
+    }
+    else if (gpio_init->pin < 0x10000)
+    {
+        port->CFG1 = (port->CFG1 & ~(mask)) | gpio_init->mode;
+    }
+    else if (gpio_init->pin < 0x1000000)
+    {
+        port->CFG2 = (port->CFG2 & ~(mask)) | gpio_init->mode;
     }
 
     port->PUL0 = gpio_init->pu_pd;
@@ -90,8 +113,8 @@ void gpio_toggle_pin(PIO_T *port, uint32_t pin)
     static uint8_t state = 0x00;
 
     if (state ^= 0x01) {
-        port->DAT = 1;
+        port->DAT |= pin;
     } else {
-        port->DAT = 0;
+        port->DAT &= ~(pin);
     }
 }

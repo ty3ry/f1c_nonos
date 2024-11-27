@@ -239,32 +239,32 @@ typedef union {
  * TIMER register
  */
 typedef struct {
-    TIM_IRQ_Enable_t    IE;
-    TIM_IRQ_Status_t    IS;
-    uint32_t            RESV1[2];
-    TMR0_Ctrl_t         T0_CTRL;
-    TMR0_Interval_t     T0_INTV;
-    TMR0_Currval_t      T0_CURV;
-    uint32_t            RESV2;
-    TMR1_Ctrl_t         T1_CTRL;
-    TMR1_Interval_t     T1_INTV;    
-    TMR1_Currval_t      T1_CURV;
-    uint32_t            RESV3;
-    TMR2_Ctrl_t         T2_CTRL;
-    TMR2_Interval_t     T2_INTV;
-    TMR2_Currval_t      T2_CURV;
-    uint32_t            RESV4[17];
-    AVS_CountCtrl_t     AVS_CTRL;
-    AVS_CNT0_t          AVS_CNT0;
-    AVS_CNT1_t          AVS_CNT1;
-    AVS_CNTDIV_t        AVS_DIV;
-    uint32_t            RESV5[4];
-    WDG_IRQ_t           WDG_IE;
-    WDG_STAT_t          WDG_IS;
-    uint32_t            RESV6[2];
-    WDG_Ctrl_t          WDG_CTRL;
-    WDG_CFG_t           WDG_CFG;
-    WDG_MODE_t          WDG_MODE;
+    __IO TIM_IRQ_Enable_t    IE;
+    __IO TIM_IRQ_Status_t    IS;
+    __IO uint32_t            RESV1[2];
+    __IO TMR0_Ctrl_t         T0_CTRL;
+    __IO TMR0_Interval_t     T0_INTV;
+    __IO TMR0_Currval_t      T0_CURV;
+    __IO uint32_t            RESV2;
+    __IO TMR1_Ctrl_t         T1_CTRL;
+    __IO TMR1_Interval_t     T1_INTV;    
+    __IO TMR1_Currval_t      T1_CURV;
+    __IO uint32_t            RESV3;
+    __IO TMR2_Ctrl_t         T2_CTRL;
+    __IO TMR2_Interval_t     T2_INTV;
+    __IO TMR2_Currval_t      T2_CURV;
+    __IO uint32_t            RESV4[17];
+    __IO AVS_CountCtrl_t     AVS_CTRL;
+    __IO AVS_CNT0_t          AVS_CNT0;
+    __IO AVS_CNT1_t          AVS_CNT1;
+    __IO AVS_CNTDIV_t        AVS_DIV;
+    __IO uint32_t            RESV5[4];
+    __IO WDG_IRQ_t           WDG_IE;
+    __IO WDG_STAT_t          WDG_IS;
+    __IO uint32_t            RESV6[2];
+    __IO WDG_Ctrl_t          WDG_CTRL;
+    __IO WDG_CFG_t           WDG_CFG;
+    __IO WDG_MODE_t          WDG_MODE;
 } TIMER_t;
 
 

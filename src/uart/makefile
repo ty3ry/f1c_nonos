@@ -1,6 +1,6 @@
 NAME	= out/uart
 BASE	= ../../
-DIRS	= . $(BASE)drv
+DIRS	= . $(BASE)drv comm
 CFLAGS	= -D_IRQ_
 LFLAGS	= --specs=nano.specs
 include $(BASE)lib/utility/utility.mk

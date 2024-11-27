@@ -800,7 +800,6 @@ typedef enum
 #define EXTI_STATUS(x)      (1 << x)
 
 
-
 #define PA0_SET_FUNC(x)  ((x) << 0)
 #define PA1_SET_FUNC(x)  ((x) << 4)
 
@@ -808,19 +807,6 @@ typedef enum
 #define CFG1_SET_FUNC(num, val)   ((val) << (4*(num-8)+2))
 #define CFG2_SET_FUNC(num, val)   ((val) << (4*(num-16)+2))
 #define CFG3_SET_FUNC(num, val)   ((val) << (4*(num-24)+2))
-
-/*typedef union {
-    struct {
-        uint32_t CFG0_PA0 : 3;
-        uint32_t RESV1 : 1;
-        uint32_t CFG0_PA1 : 3;
-        uint32_t RESV2 : 1;
-        uint32_t CFG0_PA2 : 3;
-        uint32_t RESV3 : 1;
-        uint32_t CFG0_PA3 : 3;
-    } bit;
-    uint32_t word;
-}*/
 
 /** prototype function */
 int gpio_init(PIO_T *port, GPIO_Init_t *gpio_init);
