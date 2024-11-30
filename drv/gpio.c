@@ -35,10 +35,13 @@ int gpio_init(PIO_T *port, GPIO_Init_t *gpio_init)
     uint32_t mask = 0x00;
     uint32_t pin = gpio_init->pin;
 
-    if (gpio_init->pin > 0x100) {
+    if (gpio_init->pin < 0x100) {
+        pin = (pin >> 0);
+    }
+    else if (gpio_init->pin < 0x100000) {
         pin = (pin >> 8);
     }
-    else if (gpio_init->pin > 0x10000) {
+    else if (gpio_init->pin < 0x1000000) {
         pin = (pin >> 16);
     }
 
