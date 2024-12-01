@@ -14,6 +14,7 @@
 #include "keyadc.h"
 #include "gpio.h"
 #include "timer.h"
+#include "intc.h"
 
 #ifdef MANGO_BOARD
 #define SYS_UART_NUM  UART1

@@ -19,11 +19,13 @@ void __attribute__((interrupt("IRQ"))) irq_handler (void)
 
 void tim_init (void)
 {
-  INT->BASE_ADDR = 0;
+  /*INT->BASE_ADDR = 0;
   INT->MASK[0] = ~(1 << IRQ_TIM0);
   INT->MASK[1] = 0xFFFFFFFF;
   INT->EN[0] = (1 << IRQ_TIM0);
-  INT->EN[1] = 0;
+  INT->EN[1] = 0;*/
+  IRQ_Init(IRQ_TIM0, IRQ_PRIO_0);
+
   TIM->T0_INTV = 3000;  // 24MHz / 8 = 3MHz / 3000 = 1000Hz(1mS)
   TIM->T0_CURV = 0;
   TIM->T0_CTRL = 0x35;

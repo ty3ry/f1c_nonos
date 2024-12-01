@@ -113,11 +113,9 @@ bool gpio_get_pin(PIO_T *port, uint32_t pin)
  */
 void gpio_toggle_pin(PIO_T *port, uint32_t pin)
 {
-    static uint8_t state = 0x00;
-
-    if (state ^= 0x01) {
-        port->DAT |= pin;
-    } else {
+    if (port->DAT & pin) {
         port->DAT &= ~(pin);
+    } else {
+        port->DAT |= pin;
     }
 }

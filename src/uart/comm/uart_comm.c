@@ -79,11 +79,11 @@ uint8_t uart_comm_scan_data(void)
 */
 void uart_comm_irq_handler(void)
 {
-    UART_t *puart1 = UART1;
+    UART_t *puart = uart_comm.handler;
     uint8_t temp = 0;
 
-    if (puart1->iid.bit.IID == IRQ_ID_RX_DATA_AVAIL) {
-        temp = puart1->rx_buff.bit.RBR;
+    if (puart->iid.bit.IID == IRQ_ID_RX_DATA_AVAIL) {
+        temp = puart->rx_buff.bit.RBR;
         MCUCircular_PutData(&uart_comm.cbCtx, &temp, 1);
     }
 }
@@ -97,24 +97,20 @@ void uart_comm_init(void)
     struct UART_CFG cfg ;
     UART_t uart_reg = {0};
 
-    cfg.port = UART1_PA;
+    uart_comm.handler = UART2;
+
+    cfg.port = UART2_PE;
     cfg.bitrate = UART_BR(115200);
     cfg.parity = UART_PAR_NO;
     cfg.stop = UART_STP_1;
     cfg.lenght = UART_8b;
 
     /** init uart */
-    uart_init(UART1, cfg);
-    uart_enable_irq(UART1);
+    uart_init(uart_comm.handler, cfg);
+    uart_enable_irq(uart_comm.handler);
 
     /** enable uart IRQ */
-    INT->BASE_ADDR = 0;
-    INT->MASK[0] = ~(1 << IRQ_UART1);
-    INT->MASK[1] = 0xFFFFFFFF;
-    INT->EN[0] = (1 << IRQ_UART1);
-    INT->EN[1] = 0;
-
-    uart_comm.uart_handler = UART1;
+    IRQ_Init(IRQ_UART2, IRQ_PRIO_1);
     
     /** init circular buffer */
     MCUCircular_Config(&uart_comm.cbCtx, uart_comm.circular_buffer, CIRCULAR_BUFFER_LEN);
@@ -126,7 +122,7 @@ void uart_comm_init(void)
 */
 static void uart_comm_uart_send_byte(uint8_t data)
 {
-    uart_put(uart_comm.uart_handler, data); 
+    uart_put(uart_comm.handler, data); 
 }
 
 

@@ -11,7 +11,7 @@
 #ifndef UART_COMM_H
 #define UART_COMM_H
 
-#include "uart.h"
+#include "sys.h"
 #include "circular_buffer.h"
 #include "timeout.h"
 #include "command.h"
@@ -40,7 +40,7 @@
 /** handler for bt broadcaster */
 typedef struct
 {
-    uint32_t *uart_handler;
+    uint32_t *handler;
     uint8_t circular_buffer[CIRCULAR_BUFFER_LEN];
     MCU_CIRCULAR_CONTEXT cbCtx;
     uint8_t rx_buffer[UART_COMM_BUFF_LEN];

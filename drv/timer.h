@@ -48,7 +48,8 @@ typedef union {
     struct {
         uint32_t TMR0_IRQ_PEND : 1;    
         uint32_t TMR1_IRQ_PEND : 1;  
-        uint32_t TMR2_IRQ_PEND : 1;     
+        uint32_t TMR2_IRQ_PEND : 1;    
+        uint32_t RESV : 29; 
     } bit;
     uint32_t word;
 } TIM_IRQ_Status_t;
@@ -235,6 +236,48 @@ typedef union {
     uint32_t word;
 }WDG_MODE_t;
 
+
+/** TIMER ID */
+enum {
+    TIMER0 = 0,
+    TIMER1,
+    TIMER2,
+};
+
+/** timer reload */
+enum {
+    TMR_NO_RELOAD = 0,
+    TMR_RELOAD_EN,      // After the bit is set, 
+                        // it can not be written again before it’s cleared automatically
+};
+
+/** timer clock source */
+enum {
+    TMR_CLK_SRC_LOSC = 0,
+    TMR_CLK_SRC_OSC24M,
+};
+
+/** timer prescaller */
+enum {
+    TMR_CLK_PSC_1 = 0,
+    TMR_CLK_PSC_2,
+    TMR_CLK_PSC_4,
+    TMR_CLK_PSC_8,
+    TMR_CLK_PSC_16,
+    TMR_CLK_PSC_32,
+    TMR_CLK_PSC_64,
+    TMR_CLK_PSC_128,
+};
+
+/** timer mode */
+enum {
+    TMR_MODE_CONT = 0,
+    TMR_MODE_SINGLE,
+};
+
+/** timer function pointer, used for timer IRQ */
+typedef void (*tmr_irq_func_t)(void);
+
 /**
  * TIMER register
  */
@@ -267,5 +310,11 @@ typedef struct {
     __IO WDG_MODE_t          WDG_MODE;
 } TIMER_t;
 
+/** prototype function */
+int TIM0_Init(uint32_t psc, uint32_t interval, uint8_t irq_en);
+int TIM1_Init(uint32_t psc, uint32_t interval, uint8_t irq_en);
+int TIM2_Init(uint32_t psc, uint32_t interval, uint8_t irq_en);
+TIMER_t *get_tim_handler(void);
+/** end of prototype function */
 
 #endif /** end of TIMER_H */

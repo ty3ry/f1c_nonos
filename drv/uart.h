@@ -248,35 +248,6 @@ typedef union {
   uint32_t word;
 } UART_DBGDLH_t;
 
-/**
- * typedef struct {
-  union {
-  __I   u32 RBR;            // 0x00 Receive Buffer Register
-  __O   u32 THR;            // 0x00 Transmit Holding Register
-  __IO  u32 DLL;            // 0x00 Divisor Latch Low Register
-  };
-  union {
-  __IO  u32 IER;            // 0x04 Interrupt Enable Register
-  __IO  u32 DLH;            // 0x04 Divisor Latch High Register
-  };
-  union {
-  __I   u32 IIR;            // 0x08 Interrupt Identify Register
-  __O   u32 FCR;            // 0x08 FIFO Control Register
-  };
-  __IO  u32 LCR;            // 0x0C Line Control Register
-  __IO  u32 MCR;            // 0x10 Modem Control Register
-  __I   u32 LSR;            // 0x14 Line Status Register
-  __I   u32 MSR;            // 0x18 Modem Status Register
-  __I   u32 SCH;            // 0x1C Scratch Register
-  __I   u32 RES1[23];
-  __I   u32 USR;            // 0x7C Status register
-  __I   u32 TFL;            // 0x80 Transmit FIFO Level Register
-  __I   u32 RFL;            // 0x84 Receive FIFO Level Register
-  __I   u32 RES2[7];
-  __I   u32 HALT;           // 0xA4 Halt TX Register
-} UART_T;
- */
-
 /** uart register handler */
 typedef struct
 {
